@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://claude.ai/code/artifact/4d23f315-4844-4abc-9dd2-ef19469fd404/sitemap.xml
