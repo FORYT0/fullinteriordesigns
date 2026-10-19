@@ -11,21 +11,7 @@
   --glow:rgba(28,63,209,.22);
   --shadow:0 18px 40px -24px rgba(14,20,48,.35);
 }
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    --bg:#0a0e1f;
-    --surface:#11172e;
-    --surface-2:#151d3a;
-    --ink:#eef1fb;
-    --ink-soft:#9aa3c8;
-    --line:rgba(226,232,255,.14);
-    --accent:#5b7bff;
-    --accent-ink:#ffffff;
-    --accent-soft:rgba(91,123,255,.18);
-    --glow:rgba(91,123,255,.32);
-    --shadow:0 18px 44px -22px rgba(0,0,0,.65);
-  }
-}
+/* Light (white) is the default; dark only when the visitor picks it via the toggle. */
 :root[data-theme="dark"]{
   --bg:#0a0e1f;
   --surface:#11172e;
@@ -366,3 +352,19 @@ footer{border-top:1px solid var(--line);padding-block:32px 50px;}
 .foot-social{display:flex;gap:10px;margin-top:20px;}
 .icon-btn.pending{opacity:.4;cursor:default;pointer-events:none;}
 .fineprint{margin-top:22px;font-size:.76rem;color:var(--ink-soft);}
+
+/* ---------- dark-mode nudge ---------- */
+.theme-prompt{
+  position:fixed;left:50%;bottom:max(20px,env(safe-area-inset-bottom,0px));
+  transform:translate(-50%,24px);opacity:0;pointer-events:none;
+  width:min(440px,calc(100vw - 32px));z-index:60;
+  background:var(--surface);color:var(--ink);
+  border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);
+  padding:16px 18px;display:flex;flex-direction:column;gap:12px;
+  transition:opacity .35s ease, transform .35s ease;
+}
+.theme-prompt.show{opacity:1;transform:translate(-50%,0);pointer-events:auto;}
+.theme-prompt p{font-size:.9rem;line-height:1.45;}
+.theme-prompt strong{font-family:'Fraunces',Georgia,serif;font-weight:600;}
+.theme-prompt-actions{display:flex;flex-wrap:wrap;gap:10px;}
+.theme-prompt-actions .btn{padding:.6em 1.1em;font-size:.86rem;}

@@ -18,8 +18,11 @@
     });
   }
 
+  /* default theme */
+  if(!document.documentElement.getAttribute('data-theme')){ document.documentElement.setAttribute('data-theme','light'); }
+
   var themeToggle = document.getElementById('themeToggle');
-  function currentTheme(){ return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark'; }
+  function currentTheme(){ return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'; }
   function syncThemeLabel(t){ themeToggle.setAttribute('aria-label', t === 'dark' ? 'Switch to white mode' : 'Switch to dark mode'); }
   if (themeToggle) {
     syncThemeLabel(currentTheme());
@@ -28,8 +31,49 @@
       document.documentElement.setAttribute('data-theme', next);
       try{ localStorage.setItem('fidk-theme', next); }catch(e){}
       syncThemeLabel(next);
+      userToggled = true;
+      hideThemePrompt();
     });
   }
+
+  /* ---------- dark-mode nudge: after 15s, ask to switch to white or stay ---------- */
+  var userToggled = false, themePrompt = null;
+  function hideThemePrompt(){
+    if (!themePrompt) return;
+    themePrompt.classList.remove('show');
+    var p = themePrompt; themePrompt = null;
+    setTimeout(function(){ if (p.parentNode) p.parentNode.removeChild(p); }, 400);
+  }
+  function showThemePrompt(){
+    if (themePrompt || userToggled || currentTheme() !== 'dark') return;
+    try{ if (localStorage.getItem('fidk-dark-ok') === '1') return; }catch(e){}
+    var el = document.createElement('div');
+    el.className = 'theme-prompt';
+    el.setAttribute('role','dialog');
+    el.setAttribute('aria-label','Colour mode');
+    el.innerHTML =
+      '<p><strong>Prefer white mode?</strong> This site looks best in white mode, but you can stay in dark if you like it.</p>' +
+      '<div class="theme-prompt-actions">' +
+        '<button type="button" class="btn btn-accent" data-act="light">Switch to white mode</button>' +
+        '<button type="button" class="btn btn-ghost" data-act="stay">Stay in dark mode</button>' +
+      '</div>';
+    document.body.appendChild(el);
+    themePrompt = el;
+    el.addEventListener('click', function(e){
+      var b = e.target.closest('button[data-act]');
+      if (!b) return;
+      if (b.getAttribute('data-act') === 'light') {
+        document.documentElement.setAttribute('data-theme','light');
+        try{ localStorage.setItem('fidk-theme','light'); }catch(err){}
+        if (themeToggle) syncThemeLabel('light');
+      } else {
+        try{ localStorage.setItem('fidk-dark-ok','1'); }catch(err){}
+      }
+      hideThemePrompt();
+    });
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ el.classList.add('show'); }); });
+  }
+  if (currentTheme() === 'dark') { setTimeout(showThemePrompt, 15000); }
 
   function buildMessage(){
     var name = document.getElementById('f-name').value.trim();
