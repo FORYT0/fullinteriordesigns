@@ -20,4 +20,4 @@ Marketing website for Full Interior Designs Kenya — interior design, renovatio
 - Light mode is the default theme; dark mode is available via the toggle in the nav (persisted in `localStorage`).
 - The "years in business" figures on the site are computed live from a `FOUNDED_YEAR` constant at the top of `script.js`, so they increment automatically each year.
 - `robots.txt`, `sitemap.xml`, and the canonical/Open Graph URLs in each page's `<head>` point at https://www.fullinteriordesigns.co.ke.
-- Contact: WhatsApp/phone 0790 702089 · fullinterior.ke@gmail.com
+- Contact: WhatsApp/phone 0182 662 424 · fullinterior.ke@gmail.com

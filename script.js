@@ -98,7 +98,7 @@
       e.preventDefault();
       if (!form.reportValidity()) return;
       var text = encodeURIComponent(buildMessage());
-      window.open('https://wa.me/254790702089?text=' + text, '_blank', 'noopener');
+      window.open('https://wa.me/254182662424?text=' + text, '_blank', 'noopener');
     });
 
     var emailBtn = document.getElementById('emailInstead');
