@@ -180,4 +180,21 @@
       });
     });
   }
+  /* ---------- ad tracking: WhatsApp / call taps and quote form ---------- */
+  function track(evt, params){
+    try { if (typeof fbq === 'function') fbq('track', evt, params || {}); } catch(e){}
+  }
+  document.addEventListener('click', function(e){
+    var a = e.target.closest ? e.target.closest('a[href]') : null;
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+    if (href.indexOf('wa.me') !== -1) track('Contact', { method: 'whatsapp' });
+    else if (href.indexOf('tel:') === 0) track('Contact', { method: 'call' });
+  });
+  var quoteFormEl = document.getElementById('quoteForm');
+  if (quoteFormEl) {
+    quoteFormEl.addEventListener('submit', function(){
+      if (quoteFormEl.checkValidity()) track('Lead', { method: 'whatsapp_form' });
+    });
+  }
 })();
